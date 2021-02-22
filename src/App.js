@@ -5,6 +5,28 @@ import lightOff from "./images/light-bulb-off.png";
 export default function App() {
   const [buttonInvisible, setbuttonInvisible] = useState(false);
   const [alertToggle, setAlertToggle] = useState(false);
+  const [mouseOver, setMouseOver] = useState(false);
+  const [input, setInput] = useState('');
+  // const [lists1, setLists1] = useState('');
+  // const [lists2, setLists2] = useState('');
+
+  // Validate
+  // When the form is submitted,
+  // - prevent the default event from firing
+  // - set the input value to state
+  // - check the length of the input 
+  // - if the length is greater than 2, set some text in the div
+  // - if the length if 2 or less, add text to tell the user how many characters it should be
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const state = input.value
+      if(state.length > 2){
+        return setInput('')
+      }else{
+        return 'Min length is 3 characters';
+      }
+  }
 
   return (
     <div className="container">
@@ -35,6 +57,7 @@ export default function App() {
                 id="display-name-button"
                 type="button"
                 className="btn btn-primary btn-block"
+                onClick={() => setbuttonInvisible(!buttonInvisible)}
               >
                 Click
               </button>
@@ -49,11 +72,14 @@ export default function App() {
                 Switch the light on when your mouse hovers over it.
               </p>
               <img
+                onMouseEnter={() => setMouseOver(!mouseOver)}
+                onMouseLeave={() => setMouseOver(!mouseOver)}
+                
                 id="light-bulb"
                 className="mx-auto d-block"
-                src={lightOff}
+                src={mouseOver ? lightOff : lightOn}
                 alt="light bulb"
-              />
+                />
             </div>
           </div>
         </div>
@@ -78,8 +104,9 @@ export default function App() {
                 id="toggle-button"
                 type="button"
                 className="btn btn-primary btn-block"
+                onClick={() => setAlertToggle(!alertToggle)}
               >
-                On
+               {alertToggle ? 'Off' : 'On'}
               </button>
             </div>
           </div>
@@ -91,7 +118,7 @@ export default function App() {
               <p className="card-text">
                 Validate the text box to be at least 3 characters.
               </p>
-              <form id="form-validate" noValidate>
+              <form id="form-validate" noValidate onClick={(e) => handleSubmit(e)}>
                 <div className="form-row">
                   <label htmlFor="form-first-name">First Name</label>
                   <input
