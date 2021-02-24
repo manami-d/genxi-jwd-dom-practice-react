@@ -7,6 +7,8 @@ export default function App() {
   const [alertToggle, setAlertToggle] = useState(false);
   const [mouseOver, setMouseOver] = useState(false);
   const [input, setInput] = useState('');
+  const [classNameVariable, setClassNameVariable] = useState('form-control')
+  // const [submitted, setSubmitted] =useState(false);
   // const [lists1, setLists1] = useState('');
   // const [lists2, setLists2] = useState('');
 
@@ -18,13 +20,24 @@ export default function App() {
   // - if the length is greater than 2, set some text in the div
   // - if the length if 2 or less, add text to tell the user how many characters it should be
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault()
+  //   const state = input.value
+  //     if(state.length > 2){
+  //       return setInput('')
+  //     }else{
+  //       return 'Min length is 3 characters';
+  //     }
+  // }
   const handleSubmit = (e) => {
     e.preventDefault()
-    const state = input.value
+    const state = input
+    console.log(state)
       if(state.length > 2){
+        setClassNameVariable('is-valid form-control');
         return setInput('')
       }else{
-        return 'Min length is 3 characters';
+        setClassNameVariable('is-invalid form-control');
       }
   }
 
@@ -104,7 +117,7 @@ export default function App() {
                 id="toggle-button"
                 type="button"
                 className="btn btn-primary btn-block"
-                onClick={() => setAlertToggle(!alertToggle)}
+                on={() => setAlertToggle(!alertToggle)}
               >
                {alertToggle ? 'Off' : 'On'}
               </button>
@@ -118,15 +131,30 @@ export default function App() {
               <p className="card-text">
                 Validate the text box to be at least 3 characters.
               </p>
-              <form id="form-validate" noValidate onClick={(e) => handleSubmit(e)}>
+              <form 
+                id="form-validate"
+                noValidate 
+                onSubmit={(e) => handleSubmit(e)}>
                 <div className="form-row">
                   <label htmlFor="form-first-name">First Name</label>
                   <input
                     type="text"
                     id="form-validate-first-name"
-                    className="form-control"
+                    // {if(submitted) {
+                    //   if(validFeedback) {
+                    //     'is-valid form-control'
+                    //   }
+//clasName as a state
+                    className={classNameVariable}
+                    onChange={(e) => setInput(e.target.value)}
                   />
+                   {/* // option 1 is-valid form-control
+                    // option 2 is-invalid form-control
+                    // {` form-control ${ }`}
+                  //create if statement? */}
+                  {/* <div class={}>{validFeedback ? 'Looks good' : 'Min 3 characters'}</div> */}
                   <div className="valid-feedback">Looks good!</div>
+                  <div className="invalid-feedback">Looks not good!</div>
                 </div>
                 <div className="form-row my-3">
                   <button className="btn btn-primary btn-block" type="submit">
